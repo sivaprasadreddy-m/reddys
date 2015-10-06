@@ -1,0 +1,86 @@
+<project name="test" default="main">
+
+
+	<path id="application" location="build/jar/HelloWorld.jar"/>
+	
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+	<target name="main">
+	
+	
+	<mail mailhost="smtp.gmail.com" mailport="465" subject="Test build" user="vapps.monitor" password="${pwd}" ssl="true"> 
+  <from address="vapps.monitor@gmail.com"/>
+    <to address="chiranjeevi.patel3@gmail.com"/>
+  <message>The ${buildname} nightly build has completed</message>
+ <attachments>
+    <fileset dir=".">
+      <include name="hello.txt"/>
+    </fileset>
+  </attachments>
+</mail>
+	
+	
+	
+	
+	<sshexec host="192.168.146.130"
+	username="root"
+	password="redhat"
+	command="df -h"  
+	trust="true"
+	/>
+	
+		<scp file="build.zip" todir="root@192.168.146.130:/root/ANT2" password="redhat" trust="true"/>
+		
+		
+		<if>
+			<equals arg1="${Env}" arg2="QA"/>
+			<then>
+				<echo> Calling QA target </echo>
+			</then>
+			<else>
+				<echo> Calling PROD target </echo>
+				
+			</else>
+		</if>
+	
+		
+	
+	
+	</target>
+
+
+
+	<target name="clean">
+		<delete dir="build"/>
+	</target>
+	<target name="compile" depends="clean" >
+		<echo>   Java code compilation</echo>
+		<mkdir dir="build/classes"/>
+		<javac srcdir="src" destdir="build/classes"/>
+	</target>
+	<target name="package" depends="compile">
+		<echo> Packaging my codebase</echo>
+		<mkdir dir="build/jar"/>
+		<jar basedir="build/classes" destfile="build/jar/HelloWorld.jar">
+			<manifest>
+				<attribute name="Main-Class" value="HelloWorld"/>
+			</manifest>
+		</jar>
+	</target>
+	<target name="test" depends="package">
+		<echo> Running junit file</echo>
+		 <junit printsummary="yes">
+            <classpath>
+                
+                <path refid="application"/>
+            </classpath>
+            <batchtest fork="yes">
+                <fileset dir="src" includes="*Test.java"/>
+            </batchtest>
+        </junit>
+		
+	</target>
+	<target name="run" depends="package">
+		<echo> Running my jar file</echo>
+		<java jar="build/jar/HelloWorld.jar"  fork='true'/>
+	</target>
+</project>

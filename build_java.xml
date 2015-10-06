@@ -1,0 +1,12 @@
+<project name="test" default="compile">
+	<path id="application" location="build/jar/HelloWorld.jar"/>
+	<target name="clean">
+		<delete dir="build"/>
+	</target>
+	<target name="compile" >
+		<echo>   Java code compilation</echo>
+		<mkdir dir="build/classes"/>
+		<javac srcdir="src" destdir="build/classes"/>
+	</target>
+	
+</project>

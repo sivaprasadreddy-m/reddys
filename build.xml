@@ -1,0 +1,15 @@
+<project name="test" default="main">
+
+	<target name="main" depends="A,B,C"/>
+		
+	<target name="A" >
+		<echo>   Hello World with ANT </echo>
+	</target>
+	<target name="B" >
+		<echo>   Hello World with ANT </echo>
+	</target>
+	<target name="C">
+		<echo>   Hello World with ANT </echo>
+	</target>
+
+</project>

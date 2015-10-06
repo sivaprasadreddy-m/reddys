@@ -1,0 +1,50 @@
+<project name="test" default="main">
+
+	<property name="filename" value="HelloWorld"/>
+	<property name="src_dir" value="src"/>
+	<property name="classes_dir" value="classes"/>
+	<property name="build_dir" value="build"/>
+	<property name="jar_dir" value="jar"/>
+	<target name="test">
+		<echo> My ANT version is : ${ant.version}</echo>
+		<echo> My ANT home is : ${ant.home}</echo>
+		<echo> My ANT project is : ${ant.project.name}</echo>
+	</target>
+	<target name="clean">
+		<delete dir="build"/>
+		<echo> x value is ${x}</echo>
+	</target>
+	<target name="compile">
+		<echo> x value is ${x}</echo>
+		<echo>   Java code compilation</echo>
+		<mkdir dir="${build_dir}/${classes_dir}"/>
+		<javac srcdir="${src_dir}" destdir="${build_dir}/${classes_dir}"/>
+	</target>
+	<target name="package">
+		<echo> Packaging my codebase</echo>
+		<mkdir dir="${build_dir}/${jar_dir}"/>
+		<jar basedir="${build_dir}/${classes_dir}" destfile="${build_dir}/jar/${filename}.jar">
+			<manifest>
+				<attribute name="Main-Class" value="${filename}"/>
+			</manifest>
+		</jar>
+	</target>
+	<target name="run">
+		<echo> Running my jar file</echo>
+		<java jar="${build_dir}/${jar_dir}/${filename}.jar"  fork='true'/>
+	</target>
+	
+	<target name="main">
+	
+		<antcall target="clean">
+			<param name="x" value="100"/>
+			<param name="y" value="100"/>
+		</antcall>
+		<antcall target="compile"/>
+		<antcall target="package"/>
+		<antcall target="run"/>
+	
+	</target>
+	
+	
+</project>

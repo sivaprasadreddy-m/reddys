@@ -1,0 +1,16 @@
+<project name="test" default="test">
+
+	<target name="test">
+		<echo>Advanes task</echo>
+		
+		<!--<zip basedir="build" destfile="build.zip" /> 
+		<unzip src="build.zip" dest="build" />
+		
+		<exec os="Windows 7" executable="cmd.exe">
+			<arg  line="/c dir"/>
+		</exec>-->
+		
+		<ant antfile="build.xml"/>
+		<ant antfile="build_prop.xml"/>
+	</target>
+</project>
